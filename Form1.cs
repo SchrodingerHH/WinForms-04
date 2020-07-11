@@ -26,6 +26,7 @@ namespace WinForms_04
             form_game.Show();
             Game.Init(form_game);
             Game.Draw();
+
         }
     }
 }
