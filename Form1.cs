@@ -19,7 +19,6 @@ namespace WinForms_04
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            
             Form form_game = new Form();
 
             form_game.Width = 800;
@@ -27,8 +26,6 @@ namespace WinForms_04
             form_game.Show();
             Game.Init(form_game);
             Game.Draw();
-            
-            
         }
     }
 }
