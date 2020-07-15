@@ -15,7 +15,6 @@ namespace WinForms_04
         static public BaseObject[] objects;
         
 
-
         static public int Width { get; set; }
         static public int Height { get; set; }
 
@@ -52,7 +51,6 @@ namespace WinForms_04
             }
         }
 
-        //C:\Users\lrgcr\OneDrive\pictures\Lutik-TW3-top.png
         static public void Draw()
         {
             Point mousePoint = new Point(100,200);
@@ -65,7 +63,7 @@ namespace WinForms_04
 
             //imageShip = Image.FromFile(@"C:\Users\lrgcr\OneDrive\Изображения\ship.png");
             //buffer.Graphics.DrawImage(imageShip, mousePoint);
-            buffer.Graphics.FillRectangle(Brushes.White,new Rectangle(50, 50, 50, 25));        
+            //buffer.Graphics.FillRectangle(Brushes.White,new Rectangle(50, 50, 50, 25));        
             buffer.Render();
         }
 
@@ -74,10 +72,14 @@ namespace WinForms_04
             Random rnd = new Random();
             int objectSize;
             objects = new BaseObject[30];
-            for (int i = 0; i < objects.Length; i++)
+            for (int i = 0; i < objects.Length/2; i++)
             {
                 objectSize = rnd.Next(10,25);
                 objects[i] = new BaseObject(new Point(600, i * 20), new Point(15 - i, 15 - i), new Size(objectSize,objectSize));
+            }
+            for (int i = objects.Length/2; i < objects.Length; i++)
+            {
+                objects[i] = new Star(new Point(Convert.ToInt32(600), i * 25), new Point(i,i), new Size(25,25));
             }
         }
     }

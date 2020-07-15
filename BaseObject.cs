@@ -18,12 +18,12 @@ namespace WinForms_04
             this.size = size;
         }
 
-        public void Draw()
+        public virtual void Draw()
         {
             Game.buffer.Graphics.DrawEllipse(Pens.White, pos.X, pos.Y, size.Width, size.Height);
         }
 
-        public void Update()
+        public virtual void Update()
         {
             pos.X = pos.X + dir.X;
             pos.Y = pos.Y + dir.Y;

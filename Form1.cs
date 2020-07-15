@@ -27,6 +27,13 @@ namespace WinForms_04
             Game.Init(form_game);
             Game.Draw();
 
+
+            
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            this.Hide();
         }
     }
 }
