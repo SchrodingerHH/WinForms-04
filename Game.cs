@@ -92,9 +92,9 @@ namespace WinForms_04
             }
             foreach (Asteroid obj in asteroids)
             {
-                obj.Draw();
+                obj?.Draw();
             }
-            bullet.Draw();
+            bullet?.Draw();
             ship.Draw();
             if (ship != null)
             {
@@ -125,7 +125,7 @@ namespace WinForms_04
             {
                 obj.Update();
             }
-            bullet.Update();
+            bullet?.Update();
             for (int i = 0; i < asteroids.Length; i++)
             {
                 if (asteroids[i] == null)
