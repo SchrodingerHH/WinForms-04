@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -21,14 +22,12 @@ namespace WinForms_04
         {
             Form form_game = new Form();
 
-            form_game.Width = 800;
-            form_game.Height = 600;
+            form_game.Width = 1400;
+            form_game.Height = 700;
+            form_game.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             form_game.Show();
             Game.Init(form_game);
             Game.Draw();
-
-
-            
         }
 
         private void Form1_Shown(object sender, EventArgs e)
