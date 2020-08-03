@@ -18,7 +18,7 @@ namespace WinForms_04
 
         public Ship(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
-
+            MessageDie += PrintDie;
         }
 
         public override void Draw()
@@ -36,7 +36,7 @@ namespace WinForms_04
         {
             if (pos.Y>0)
             {
-                pos.Y = pos.Y + dir.Y;
+                pos.Y = pos.Y - dir.Y;
             }
         }
 
@@ -48,9 +48,17 @@ namespace WinForms_04
             }
         }
 
+
+
         public void Die()
         {
             MessageDie.Invoke();
-        }        
+        }
+
+        public void PrintDie()
+        {
+            Console.WriteLine("Game over");
+        }
+
     }
 }

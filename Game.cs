@@ -14,7 +14,8 @@ namespace WinForms_04
         static public BufferedGraphics buffer;
         static public Image imageShip { get; set; }
         static public BaseObject[] objects;
-        static private Bullet bullet;
+        static private Bullet[] bullets;
+        static private int bulletsCount = 0;
         static private Asteroid[] asteroids;
         static private Ship ship = new Ship(new Point(10, 400), new Point(5, 5), new Size(10, 10));
 
@@ -27,7 +28,7 @@ namespace WinForms_04
         {
             try
             {
-                if (form.Width>1000 || form.Height>1000 || form.Width<0 || form.Height<0)
+                if (form.Width>1920 || form.Height>1080 || form.Width<0 || form.Height<0)
                 {
                     throw new ArgumentOutOfRangeException();
                 }
@@ -61,14 +62,10 @@ namespace WinForms_04
             Random rnd = new Random();
             int objectSize;
             objects = new BaseObject[30];
-            bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(5, 2));
-            asteroids = new Asteroid[5];
+            //bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(5, 2));
+            bullets = new Bullet[10];
+            asteroids = new Asteroid[10];
 
-            /*for (int i = 0; i < objects.Length/2; i++)
-            {
-                objectSize = rnd.Next(10,25);
-                objects[i] = new BaseObject(new Point(600, i * 20), new Point(15 - i, 15 - i), new Size(objectSize,objectSize));
-            }*/
             for (int i = 0; i < objects.Length; i++)
             {
                 int r = rnd.Next(5, 50);
@@ -78,6 +75,10 @@ namespace WinForms_04
             {
                 int r = rnd.Next(5, 50);
                 asteroids[i] = new Asteroid(new Point(1000, rnd.Next(0, Game.Height)), new Point(-r / 5, r), new Size(r, r));
+            }
+            for (int i = 0; i < bullets.Length; i++)
+            {
+                bullets[i] = null;
             }
         }
 
@@ -94,18 +95,23 @@ namespace WinForms_04
             {
                 obj?.Draw();
             }
-            bullet?.Draw();
+            foreach (var bullet in bullets)
+            {
+                bullet?.Draw();
+            }            
             ship.Draw();
             if (ship != null)
             {
                 buffer.Graphics.DrawString($"Energy: {ship.Energy}", SystemFonts.DefaultFont, Brushes.White, 0, 0);
-                buffer.Render();
+                try
+                {
+                    buffer.Render();
+                }
+                catch (Exception)
+                {
+                }
+                
             }
-
-
-            //imageShip = Image.FromFile(@"C:\Users\lrgcr\OneDrive\Изображения\ship.png");
-            //buffer.Graphics.DrawImage(imageShip, mousePoint);
-            //buffer.Graphics.FillRectangle(Brushes.White,new Rectangle(50, 50, 50, 25));        
 
             try
             {
@@ -125,27 +131,36 @@ namespace WinForms_04
             {
                 obj.Update();
             }
-            bullet?.Update();
+            foreach (var bullet in bullets)
+            {
+                bullet?.Update();
+            }
             for (int i = 0; i < asteroids.Length; i++)
             {
+                var rnd = new Random();
                 if (asteroids[i] == null)
                 {
                     continue;
                 }
                 asteroids[i].Update();
-                if (bullet != null && bullet.Collision(asteroids[i]))
+                for (int j = 0; j < bullets.Length; j++)
                 {
-                    System.Media.SystemSounds.Hand.Play();
-                    asteroids[i] = null;
-                    bullet = null;
-                    continue;
+                    if (bullets[j] != null && bullets[j].Collision(asteroids[i]))
+                    {
+                        int r = rnd.Next(5, 50);
+                        System.Media.SystemSounds.Hand.Play();
+                        asteroids[i] = null;
+                        asteroids[i] = new Asteroid(new Point(rnd.Next(0, Game.Width), rnd.Next(0, Game.Height)), new Point(-r / 5, r), new Size(100, r));
+                        bullets[j] = null;
+                        bulletsCount--;
+                        continue;
+                    }
                 }
+
                 if (!ship.Collision(asteroids[i]))
                 {
                     continue;
                 }
-
-                var rnd = new Random();
                 ship.EnergyLow(rnd.Next(1, 10));
                 System.Media.SystemSounds.Asterisk.Play();
                 if (ship.Energy <= 0)
@@ -153,19 +168,6 @@ namespace WinForms_04
                     ship.Die();
                 }
             }
-
-            
-
-            
-
-            /*foreach (Asteroid asteroid in asteroids)
-            {
-                asteroid.Update();
-                if (asteroid.Collision(bullet))
-                {
-                    System.Media.SystemSounds.Hand.Play();
-                }
-            }*/
         }
 
         private static void Timer_Tick(object sender, EventArgs e)
@@ -176,15 +178,20 @@ namespace WinForms_04
 
         private static void Form_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.ControlKey)
+            
+            if(e.KeyCode == Keys.Right)
             {
-                bullet = new Bullet(new Point(ship.rectangle.X + 10, ship.rectangle.Y + 4), new Point(4, 0), new Size(4, 1));
+                if (bulletsCount < 10)
+                {
+                    bullets[bulletsCount] = new Bullet(new Point(ship.rectangle.X + 10, ship.rectangle.Y + 4), new Point(4, 0), new Size(4, 1));
+                    bulletsCount++;
+                }
             }
-            if(e.KeyCode == Keys.Up)
+            else if(e.KeyCode == Keys.Up)
             {
                 ship.Up();
-            }
-            if(e.KeyCode == Keys.Down)
+            } 
+            else if(e.KeyCode == Keys.Down)
             {
                 ship.Down();
             }
@@ -196,7 +203,5 @@ namespace WinForms_04
             buffer.Graphics.DrawString("The End", new Font(FontFamily.GenericSansSerif, 60, FontStyle.Underline), Brushes.White, 200, 200);
             buffer.Render();
         }
-
-        
     }
 }

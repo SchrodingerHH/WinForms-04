@@ -19,6 +19,22 @@ namespace WinForms_04
             Game.buffer.Graphics.FillEllipse(Brushes.White, pos.X, pos.Y, size.Width, size.Height);
         }
 
+        public override void Update()
+        {
+            pos.X = pos.X + dir.X;
+            pos.Y = pos.Y + dir.Y;
+
+            if (pos.X < 0 || pos.X > Game.Width)
+            {
+                dir.X = -dir.X;
+            }
+            if (pos.Y < 0 || pos.Y > Game.Height)
+            {
+                dir.Y = -dir.Y;
+            }
+        }
+    
+
         int IComparable.CompareTo(object obj)
         {
             if (obj is Asteroid temp)
@@ -35,9 +51,8 @@ namespace WinForms_04
                 {
                     return 0;
                 }
-                throw new ArgumentException("Parameter is not a Asteroid!");
             }
-            return 0;
+            throw new ArgumentException("Parameter is not a Asteroid!");
         }
 
         public object Clone()
