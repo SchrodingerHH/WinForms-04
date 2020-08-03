@@ -28,8 +28,9 @@ namespace WinForms_04
             Game.buffer.Graphics.DrawEllipse(Pens.White, pos.X, pos.Y, size.Width, size.Height);
         }*/
 
-        public virtual void Update()
-        {
+        public abstract void Update();
+            
+        /*{
             pos.X = pos.X + dir.X;
             pos.Y = pos.Y + dir.Y;
 
@@ -41,6 +42,6 @@ namespace WinForms_04
             {
                 dir.Y = -dir.Y;
             }
-        }
+        }*/
     }
 }

@@ -20,6 +20,8 @@ namespace WinForms_04
         }
         private void Form1_Load(object sender, EventArgs e)
         {
+            //Console.WriteLine("test");
+            //Console.ReadKey();
             Form form_game = new Form();
 
             form_game.Width = 1400;
